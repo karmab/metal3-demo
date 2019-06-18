@@ -15,6 +15,7 @@ parameters:
  - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC5Qbj7vDf0uYQpeYb432g5R4YvYJaPfPA4EM4qc3lO62c7oUsWbZlZBl5neEWX41HGCIP4Zm1ybN9iiDyeIns6hg5OkU2vUGuPtV2KCAZOI7snzXeZxlrjsVMjMy/CYUlvIOAPxY4XzfzMMAJjIJni18R2PqVRI4f4SeSq3IIzpnOu2VQmqjFmmdybQY83BvBvWj6KLszAXkJk9LkZSAoktXimDBWFPQYikzZihLolRxwHzo21lXSw58D1N+6IeMudOviAte5yu6FBUN6dFYbt9dkLuH2/ONliFz/042n5UNp0wC5BLdpVwJpWqqrCVaeXBgla/gYm8YNZJIAlf8K5 kboumedh@vegeta.local
  tags:
  - cnvlab
+ baremetal: true
  kubevirt: true
  cdi: true
  rook: true
@@ -43,6 +44,8 @@ student{{ "%03.d" | format(node+1) }}:
   - size: {{ rook_disk_size }}
  pool: default
  files: 
+  - path: /etc/profile.d/helper.sh
+    origin: helper.sh
   - kubernetes.sh
   - path: /etc/yum.repos.d/kubernetes.repo
     origin: kubernetes.repo
@@ -52,8 +55,8 @@ student{{ "%03.d" | format(node+1) }}:
   - istio.sh
   - knative.sh
   - kafka.sh
-  - rook_pool.yml
-  - rook_sc.yml
+  - baremetal.sh
+  - rook.yml
  scripts:
   - requirements.sh
 {% if deploy %}

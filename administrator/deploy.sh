@@ -1,4 +1,7 @@
 sh /root/kubernetes.sh
+{% if baremetal %}
+sh /root/baremetal.sh
+{% endif %}
 {% if kubevirt %}
 sh /root/kubevirt.sh
 {% endif %}

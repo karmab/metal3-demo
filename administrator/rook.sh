@@ -15,5 +15,4 @@ kubectl create -f common.yaml
 kubectl create -f operator.yaml
 sed "s/useAllDevices: false/useAllDevices: true/" cluster-test.yaml > cluster.yaml
 kubectl create -f cluster.yaml
-kubectl create -f /root/rook_sc.yml
-kubectl create -f /root/rook_pool.yml
+kubectl create -f /root/rook.yml
