@@ -43,6 +43,8 @@ student{{ "%03.d" | format(node+1) }}:
   - kubevirt.sh
   - cdi.sh
   - rook.sh
+  - istio.sh
+  - knative.sh
   - rook_pool.yml
   - rook_sc.yml
  scripts:
