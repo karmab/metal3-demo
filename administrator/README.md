@@ -1,37 +1,9 @@
 
-This repository provides instructions on how to deploy an arbitrary number of vms on gcp with kubevirt, optionally with nested
+This repository provides instructions on how to deploy an arbitrary number of vms on libvirt with kni ecosystem installed on it
 
 ## Requirements
 
 - [*kcli*](https://github.com/karmab/kcli) tool ( configured to point to gcp) with version >= 14.0
-- a gcp account and the corresponding service account json file
-- an image with nested enabled (optional)
-- vpc firewall rule allowing tcp:22, tcp:80, tcp:8443 (for openshift) and tcp:30000 for vms tagged with cnvlab
-- a google cloud DNS domain registered
-
-### Service account retrieval
-
-To gather your service account file:
-
-- Select the "IAM" → "Service accounts" section within the Google Cloud Platform console.
-- Select "Create Service account".
-- Select "Project" → "Editor" as service account Role.
-- Select "Furnish a new private key".
-- Select "Save"
-
-### Preparing a nested enabled image (Optional)
-
-```
-# export GOOGLE_APPLICATION_CREDENTIALS=...
-# gcloud config set project cnvlab-XXXX
-gcloud compute images create nested-centos7 --source-image-family centos-7 --source-image-project centos-cloud --licenses "https://www.googleapis.com/compute/v1/projects/vm-options/global/licenses/enable-vmx"
-```
-
-### Create a dns domain
-
-- Select the "Networking" → "Network Services" → "Cloud DNS"
-- Select "Create Zone"
-- Put the same name as your domain, but with '-' instead
 
 ### kcli setup
 
@@ -39,7 +11,7 @@ gcloud compute images create nested-centos7 --source-image-family centos-7 --sou
 
 ```
 docker pull karmab/kcli
-echo alias kcli=\'docker run -it --rm --security-opt label:disable -v ~/.kcli:/root/.kcli -v ~/.ssh:/root/.ssh -v $PWD:/workdir karmab/kcli\' >> $HOME.bashrc
+echo alias kcli=\"docker run -it --rm --security-opt label=disable -v $HOME/.kcli:/root/.kcli -v $HOME/.ssh:/root/.ssh -v $PWD:/workdir karmab/kcli\" >> $HOME.bashrc
 ```
 
 #### Configuration

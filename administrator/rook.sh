@@ -1,4 +1,3 @@
-cd rook/cluster/examples/kubernetes/ceph
 COMPONENT="rook/rook"
 {% if rook_version == 'latest' %}
 VERSION=$(curl -s https://api.github.com/repos/$COMPONENT/releases|grep tag_name|sort -V | tail -1 | awk -F':' '{print $2}' | sed 's/,//' | xargs)
