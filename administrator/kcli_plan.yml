@@ -72,4 +72,12 @@ student{{ "%03.d" | format(node+1) }}:
 {% if deploy %}
   - deploy.sh
 {% endif %}
+
+bmstudent{{ "%03.d" | format(node+1) }}:
+ pool: {{ pool }}
+ numcpus: 4
+ memory: 1024
+ nets:
+ - name: studentnet{{ "%03.d" | format(node+1) }}
+   mac: 00:c2:fc:3b:e{{ node + 1 }}:01
 {% endfor %}

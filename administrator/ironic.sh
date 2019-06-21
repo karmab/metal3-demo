@@ -1,6 +1,7 @@
 WORKING_DIR=${WORKING_DIR:-"/opt/metal3-dev-env"}
 NODES_FILE=${NODES_FILE:-"${WORKING_DIR}/ironic_nodes.json"}
 NODES_PLATFORM=${NODES_PLATFORM:-"libvirt"}
+provisioning_interface=eth1
 
 # Ironic vars
 export IRONIC_IMAGE=${IRONIC_IMAGE:-"quay.io/metal3-io/ironic:master"}
@@ -24,7 +25,8 @@ mariadb_password=$(echo $(date;hostname)|sha256sum |cut -c-20)
 # Create pod
 #podman pod create -n ironic-pod 
 mkdir -p $IRONIC_DATA_DIR
+docker run -d --net host --privileged --name dnsmasq -v $IRONIC_DATA_DIR:/shared --entrypoint /bin/rundnsmasq --env PROVISIONING_INTERFACE=$provisioning_interface --env DNSMASQ_EXCEPT_INTERFACE=$provisioning_interface ${IRONIC_IMAGE}
 docker run -d --net host --privileged --name httpd -v $IRONIC_DATA_DIR:/shared --entrypoint /bin/runhttpd ${IRONIC_IMAGE}
 docker run -d --net host --privileged --name mariadb -v $IRONIC_DATA_DIR:/shared --entrypoint /bin/runmariadb --env MARIADB_PASSWORD=$mariadb_password ${IRONIC_IMAGE}
-docker run -d --net host --privileged --name ironic --env MARIADB_PASSWORD=$mariadb_password -v $IRONIC_DATA_DIR:/shared ${IRONIC_IMAGE}
+docker run -d --net host --privileged --name ironic --env MARIADB_PASSWORD=$mariadb_password -v $IRONIC_DATA_DIR:/shared -e PROVISIONING_INTERFACE=$provisioning_interface ${IRONIC_IMAGE}
 #docker run -d --net host --privileged --name ironic-inspector "${IRONIC_INSPECTOR_IMAGE}"
