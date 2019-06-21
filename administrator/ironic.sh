@@ -17,7 +17,8 @@ mkdir -p "$IRONIC_DATA_DIR/html/images"
 pushd "$IRONIC_DATA_DIR/html/images"
 [ ! -f ironic-python-agent.initramfs ] || curl --insecure --compressed -L https://images.rdoproject.org/master/rdo_trunk/current-tripleo-rdo/ironic-python-agent.tar | tar -xf -
 CENTOS_IMAGE=CentOS-7-x86_64-GenericCloud-1901.qcow2
-[ ! -f ${CENTOS_IMAGE} ] || curl --insecure --compressed -O -L http://cloud.centos.org/centos/7/images/${CENTOS_IMAGE}
+curl --insecure --compressed -O -L http://cloud.centos.org/centos/7/images/${CENTOS_IMAGE}
+curl --insecure --compressed -O -L http://cloud.centos.org/centos/7/images/${CENTOS_IMAGE}.md5sum
 popd
 
 # set password for mariadb

@@ -34,7 +34,7 @@ studentnet{{ "%03.d" | format(node+1) }}:
  nat: true
  pxe: 192.168.11{{ node }}.2
 
-student{{ "%03.d" | format(node+1) }}:
+student{{ "%03.d" | format(node+1) }}-kubernetes:
  template: {{ template }}  
  pool: {{ pool }}
  numcpus: {{ numcpus }}
@@ -73,8 +73,9 @@ student{{ "%03.d" | format(node+1) }}:
   - deploy.sh
 {% endif %}
 
-bmstudent{{ "%03.d" | format(node+1) }}:
+student{{ "%03.d" | format(node+1) }}-node01:
  pool: {{ pool }}
+ start: false
  numcpus: 4
  memory: 1024
  nets:
