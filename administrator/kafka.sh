@@ -1,3 +1,4 @@
+export KUBECONFIG=/root/.kube/config
 VERSION="0.12.0"
 kubectl create namespace kafka
 curl -L https://github.com/strimzi/strimzi-kafka-operator/releases/download/$VERSION/strimzi-cluster-operator-$VERSION.yaml \

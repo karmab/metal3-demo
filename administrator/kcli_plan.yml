@@ -1,7 +1,7 @@
 parameters:
  template: CentOS-7-x86_64-GenericCloud.qcow2
  pool: default
- kubernetes_version: '1.14.0'
+ kubernetes_version: '1.15.0'
  kubevirt_version: latest
  cdi_version: latest
  rook_version: latest

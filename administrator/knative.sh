@@ -1,3 +1,4 @@
+export KUBECONFIG=/root/.kube/config
 VERSION="v0.6.0"
 
 kubectl apply --selector knative.dev/crd-install=true \
