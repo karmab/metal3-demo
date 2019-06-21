@@ -8,4 +8,3 @@ kubectl apply -f https://raw.githubusercontent.com/coreos/flannel/62e44c867a2846
 mkdir -p /root/.kube
 cp -i /etc/kubernetes/admin.conf /root/.kube/config
 chown root:root /root/.kube/config
-export KUBECONFIG=/root/.kube/config

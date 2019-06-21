@@ -1,15 +1,8 @@
-export KUBECONFIG=/root/.kube/config
-COMPONENT="rook/rook"
-{% if rook_version == 'latest' %}
-VERSION=$(curl -s https://api.github.com/repos/$COMPONENT/releases|grep tag_name|sort -V | tail -1 | awk -F':' '{print $2}' | sed 's/,//' | xargs)
-{% else %}
-VERSION={{ rook_version }}
-{% endif %}
-
-yum -y install lvm2
+source /root/env.sh
 cd /root
-git clone https://github.com/rook/rook
-git checkout $VERSION
+git clone https://github.com/$ROOK_REPO
+cd $ROOK_REPO
+git checkout $ROOK_VERSION
 cd cluster/examples/kubernetes/ceph
 kubectl create -f common.yaml
 kubectl create -f operator.yaml
