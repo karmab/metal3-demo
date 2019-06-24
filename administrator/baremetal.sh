@@ -10,4 +10,5 @@ kubectl apply -f deploy/service_account.yaml --namespace=$namespace
 kubectl apply -f deploy/role.yaml --namespace=$namespace
 kubectl apply -f deploy/role_binding.yaml
 kubectl apply -f deploy/crds/metal3_v1alpha1_baremetalhost_crd.yaml
+sed -i 's/172.22.0.1:/172.22.0.2:/' deploy/operator.yaml
 kubectl apply -f deploy/operator.yaml --namespace=$namespace
