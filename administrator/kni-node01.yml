@@ -3,34 +3,34 @@ data:
   userData: I2Nsb3VkLWNvbmZpZwpob3N0bmFtZTogbWFnaWMgdm0Kc3NoX3B3YXV0aDogVHJ1ZQpkaXNhYmxlX3Jvb3Q6IGZhbHNlCnNzaF9hdXRob3JpemVkX2tleXM6Ci0gc3NoLXJzYSBBQUFBQjNOemFDMXljMkVBQUFBREFRQUJBQUFCQVFDL0F2TTlWYk8yeWlJYjlBaWxsQnAva1RyOGpxSUVyUlUxTEZLcWh3UFRtNEF0VklqRlNhT3VNNEFsc3BmQ1VJejlJSEJyRGNabWJjWUthaTNsQzNKdFFpYzdNL2ExT1dValdFMU1MOENFdk5zR1BHdTV5TlZVUW9XQzBsbVc1cnpYOWM2SHZIOEFjbWZNbWR5UTdTZ2NBbmswemlyOWp3OGVkMlRSQXpIbjN2WEZkNytzYVpMaWhGSmhYRzR6Qjh2aDdnSkhqTGZqSWEzSkhwdFd6VzlBdHFGOVFzb0JZL2l1NThSZi9oUm5yZldzY3lOM3g5cEdDU0VxZExTRHY3SEZ1SDJFYWJudk5GRlFacjRKMUZZekgvZktWWTNQcHQzcmY2NFVXQ3p0RHU3TDQ0ZlB3d2tJN25BemRtUVZUYU1vRDNFajhpNy9PU0Zac0MyVjVJQlQga2JvdW1lZGhAYnVtYmxlZm9vdApydW5jbWQ6Ci0gZWNobyB1bml4MTIzNCB8IHBhc3N3ZCAtLXN0ZGluIHJvb3QKc3NoX3B3YXV0aDogVHJ1ZQpkaXNhYmxlX3Jvb3Q6IGZhbHNlCg==
 kind: Secret
 metadata:
-  name: bmnode01-user-data
+  name: kni-node01-user-data
   namespace: baremetal
 type: Opaque
 ---
 apiVersion: v1
 kind: Secret
 metadata:
-  name: bmnode01-credentials
+  name: kni-node01-credentials
   namespace: baremetal
 type: Opaque
 data:
-  username: YWRtaW4K
-  password: YWRtaW4K
+  username: YWRtaW4=
+  password: YWRtaW4=
 ---
 apiVersion: metal3.io/v1alpha1
 kind: BareMetalHost
 metadata:
-  name: bmnode01
+  name: kni-node01
   namespace: baremetal
 spec:
   bmc:
-    address: ipmi://192.168.112.2:6230
-    credentialsName: bmnode01-credentials
+    address: ipmi://172.22.0.2:6230
+    credentialsName: kni-node01-credentials
   image:
-    url: http://192.168.112.2/images/CentOS-7-x86_64-GenericCloud-1901.qcow2
-    checksum: http://192.168.112.2/images/CentOS-7-x86_64-GenericCloud-1901.qcow2.md5sum
+    url: http://172.22.0.2/images/CentOS-7-x86_64-GenericCloud-1901.qcow2
+    checksum: http://172.22.0.2/images/CentOS-7-x86_64-GenericCloud-1901.qcow2.md5sum
   userData:
-    name: bmnode01-user-data
+    name: kni-node01-user-data
     namespace: baremetal
   bootMACAddress: 00:c2:fc:3b:e1:01
   description: ""

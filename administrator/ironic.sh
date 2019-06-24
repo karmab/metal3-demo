@@ -13,6 +13,7 @@ yum -y install python2-openstackclient python2-ironicclient python-virtualbmc ip
 systemctl enable --now virtualbmc
 ssh-keyscan -H 192.168.122.1 >> ~/.ssh/known_hosts
 vbmc add kni-node01 --port 6230 --username admin --password admin --libvirt-uri qemu+ssh://root@192.168.122.1/system
+vbmc start kni-node01
 mkdir $WORKING_DIR
 chown root:root $WORKING_DIR
 chmod 755 $WORKING_DIR
@@ -29,8 +30,8 @@ mariadb_password=$(echo $(date;hostname)|sha256sum |cut -c-20)
 # Create pod
 #podman pod create -n ironic-pod 
 mkdir -p $IRONIC_DATA_DIR
-docker run -d --net host --privileged --name dnsmasq -v $IRONIC_DATA_DIR:/shared --entrypoint /bin/rundnsmasq --env PROVISIONING_INTERFACE=$provisioning_interface --env DNSMASQ_EXCEPT_INTERFACE=$provisioning_interface ${IRONIC_IMAGE}
+# docker run -d --net host --privileged --name dnsmasq -v $IRONIC_DATA_DIR:/shared --entrypoint /bin/rundnsmasq --env PROVISIONING_INTERFACE=$provisioning_interface --env DNSMASQ_EXCEPT_INTERFACE=$provisioning_interface ${IRONIC_IMAGE}
 docker run -d --net host --privileged --name httpd -v $IRONIC_DATA_DIR:/shared --entrypoint /bin/runhttpd ${IRONIC_IMAGE}
 docker run -d --net host --privileged --name mariadb -v $IRONIC_DATA_DIR:/shared --entrypoint /bin/runmariadb --env MARIADB_PASSWORD=$mariadb_password ${IRONIC_IMAGE}
 docker run -d --net host --privileged --name ironic --env MARIADB_PASSWORD=$mariadb_password -v $IRONIC_DATA_DIR:/shared -e PROVISIONING_INTERFACE=$provisioning_interface ${IRONIC_IMAGE}
-#docker run -d --net host --privileged --name ironic-inspector "${IRONIC_INSPECTOR_IMAGE}"
+docker run -d --net host --privileged --name ironic-inspector "${IRONIC_INSPECTOR_IMAGE}"
