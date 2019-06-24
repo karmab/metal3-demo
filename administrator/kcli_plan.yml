@@ -12,29 +12,27 @@ parameters:
  rook_disk_size: 30
  numcpus: 8
  memory: 12288
- nodes: 1
  deploy: true
  emulation: false
  keys: []
  tags: [cnvlab]
  bmo: true
- kubevirt: true
- cdi: true
- rook: true
- istio: true
- knative: true
- kafka: true
- olm: true
+ kubevirt: false
+ cdi: false
+ rook: false
+ istio: false
+ knative: false
+ kafka: false
+ olm: false
 
-{% for node in range(0, nodes) %}
-studentnet{{ "%03.d" | format(node+1) }}:
+provisioningnet:
  type: network
- cidr: 192.168.11{{ node + 1 }}.0/24
+ cidr: 172.22.0.0/24
  dhcp: true
  nat: true
- pxe: 192.168.11{{ node }}.2
+ pxe: 172.22.0.2
 
-student{{ "%03.d" | format(node+1) }}-kubernetes:
+kni-kubernetes:
  template: {{ template }}  
  pool: {{ pool }}
  numcpus: {{ numcpus }}
@@ -44,10 +42,10 @@ student{{ "%03.d" | format(node+1) }}-kubernetes:
  domain: {{ domain }}
  nets:
   - name: {{ network }}
-  - name: studentnet{{ "%03.d" | format(node+1) }}
-    ip: 192.168.11{{ node + 1 }}.2
+  - name: provisioningnet
+    ip: 172.22.0.2
     mask: 255.255.255.0
-    gateway: 192.168.11{{ node }}.1
+    gateway: 172.22.0.1
  disks:
   - size: {{ disk_size }}
   - size: {{ rook_disk_size }}
@@ -73,12 +71,12 @@ student{{ "%03.d" | format(node+1) }}-kubernetes:
   - deploy.sh
 {% endif %}
 
-student{{ "%03.d" | format(node+1) }}-node01:
+kni-node01:
  pool: {{ pool }}
  start: false
  numcpus: 4
  memory: 1024
  nets:
- - name: studentnet{{ "%03.d" | format(node+1) }}
-   mac: 00:c2:fc:3b:e{{ node + 1 }}:01
-{% endfor %}
+ - name: provisioningnet
+   mac: 00:c2:fc:3b:e1:01
+ - name: default

@@ -9,7 +9,10 @@ export IRONIC_INSPECTOR_IMAGE=${IRONIC_INSPECTOR_IMAGE:-"quay.io/metal3-io/ironi
 export IRONIC_DATA_DIR="$WORKING_DIR/ironic"
 
 yum -y install centos-release-openstack-stein.noarch
-yum -y install python2-openstackclient python2-ironicclient
+yum -y install python2-openstackclient python2-ironicclient python-virtualbmc ipmitool
+systemctl enable --now virtualbmc
+ssh-keyscan -H 192.168.122.1 >> ~/.ssh/known_hosts
+vbmc add kni-node01 --port 6230 --username admin --password admin --libvirt-uri qemu+ssh://root@192.168.122.1/system
 mkdir $WORKING_DIR
 chown root:root $WORKING_DIR
 chmod 755 $WORKING_DIR

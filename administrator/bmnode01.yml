@@ -24,11 +24,11 @@ metadata:
   namespace: baremetal
 spec:
   bmc:
-    address: ipmi://192.168.111.2:6231
+    address: ipmi://192.168.112.2:6230
     credentialsName: bmnode01-credentials
   image:
-    url: http://192.168.111.2/images/CentOS-7-x86_64-GenericCloud-1901.qcow2
-    checksum: http://182.168.111.2/images/CentOS-7-x86_64-GenericCloud-1901.qcow2.md5sum
+    url: http://192.168.112.2/images/CentOS-7-x86_64-GenericCloud-1901.qcow2
+    checksum: http://192.168.112.2/images/CentOS-7-x86_64-GenericCloud-1901.qcow2.md5sum
   userData:
     name: bmnode01-user-data
     namespace: baremetal
