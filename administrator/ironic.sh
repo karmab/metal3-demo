@@ -42,3 +42,4 @@ docker run -d --net host --privileged --name httpd -v $IRONIC_DATA_DIR:/shared -
 docker run -d --net host --privileged --name mariadb -v $IRONIC_DATA_DIR:/shared --entrypoint /bin/runmariadb -e MARIADB_PASSWORD=$mariadb_password ${IRONIC_IMAGE}
 docker run -d --net host --privileged --name ironic -e MARIADB_PASSWORD=$mariadb_password -v $IRONIC_DATA_DIR:/shared -e PROVISIONING_INTERFACE=$provisioning_interface ${IRONIC_IMAGE}
 docker run -d --net host --privileged --name ironic-inspector -e PROVISIONING_INTERFACE=$provisioning_interface ${IRONIC_INSPECTOR_IMAGE}
+sed -i s@http://:80@http://172.22.0.1:80@ $WORKING_DIR/ironic/html/inspector.ipxe
