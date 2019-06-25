@@ -2,7 +2,7 @@ parameters:
  template: CentOS-7-x86_64-GenericCloud.qcow2
  network: default
  pool: default
- kubernetes_version: '1.15.0'
+ kubernetes_version: latest
  kubevirt_version: latest
  cdi_version: latest
  rook_version: latest
@@ -27,10 +27,9 @@ parameters:
 
 provisioningnet:
  type: network
- cidr: 172.22.0.0/24
- dhcp: true
+ cidr: 172.23.0.0/24
+ dhcp: false
  nat: true
- pxe: 172.22.0.2
 
 kni-kubernetes:
  template: {{ template }}  
@@ -43,9 +42,7 @@ kni-kubernetes:
  nets:
   - name: {{ network }}
   - name: provisioningnet
-    ip: 172.22.0.2
-    mask: 255.255.255.0
-    gateway: 172.22.0.1
+    noconf: yes
  disks:
   - size: {{ disk_size }}
   - size: {{ rook_disk_size }}
@@ -65,9 +62,10 @@ kni-kubernetes:
   - kubevirt.sh
   - rook.sh
   - rook.yml
- scripts:
-  - requirements.sh
+  - ironic.sh
+  - deploy.sh
 {% if deploy %}
+ scripts:
   - deploy.sh
 {% endif %}
 

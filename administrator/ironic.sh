@@ -2,6 +2,13 @@ WORKING_DIR=${WORKING_DIR:-"/opt/metal3-dev-env"}
 NODES_FILE=${NODES_FILE:-"${WORKING_DIR}/ironic_nodes.json"}
 NODES_PLATFORM=${NODES_PLATFORM:-"libvirt"}
 provisioning_interface=eth1
+echo """DEVICE=$provisioning_interface
+ONBOOT=yes
+NM_CONTROLLED=no
+BOOTPROTO=static
+IPADDR=172.22.0.1
+NETMASK=255.255.255.0""" > /etc/sysconfig/network-scripts/ifcfg-$provisioning_interface
+ifup $provisioning_interface
 
 # Ironic vars
 export IRONIC_IMAGE=${IRONIC_IMAGE:-"quay.io/metal3-io/ironic:master"}
@@ -32,6 +39,6 @@ mariadb_password=$(echo $(date;hostname)|sha256sum |cut -c-20)
 mkdir -p $IRONIC_DATA_DIR
 # docker run -d --net host --privileged --name dnsmasq -v $IRONIC_DATA_DIR:/shared --entrypoint /bin/rundnsmasq --env PROVISIONING_INTERFACE=$provisioning_interface --env DNSMASQ_EXCEPT_INTERFACE=$provisioning_interface ${IRONIC_IMAGE}
 docker run -d --net host --privileged --name httpd -v $IRONIC_DATA_DIR:/shared --entrypoint /bin/runhttpd ${IRONIC_IMAGE}
-docker run -d --net host --privileged --name mariadb -v $IRONIC_DATA_DIR:/shared --entrypoint /bin/runmariadb --env MARIADB_PASSWORD=$mariadb_password ${IRONIC_IMAGE}
-docker run -d --net host --privileged --name ironic --env MARIADB_PASSWORD=$mariadb_password -v $IRONIC_DATA_DIR:/shared -e PROVISIONING_INTERFACE=$provisioning_interface ${IRONIC_IMAGE}
-docker run -d --net host --privileged --name ironic-inspector "${IRONIC_INSPECTOR_IMAGE}"
+docker run -d --net host --privileged --name mariadb -v $IRONIC_DATA_DIR:/shared --entrypoint /bin/runmariadb -e MARIADB_PASSWORD=$mariadb_password ${IRONIC_IMAGE}
+docker run -d --net host --privileged --name ironic -e MARIADB_PASSWORD=$mariadb_password -v $IRONIC_DATA_DIR:/shared -e PROVISIONING_INTERFACE=$provisioning_interface ${IRONIC_IMAGE}
+docker run -d --net host --privileged --name ironic-inspector -e PROVISIONING_INTERFACE=$provisioning_interface ${IRONIC_INSPECTOR_IMAGE}

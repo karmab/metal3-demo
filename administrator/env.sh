@@ -1,8 +1,14 @@
 export KUBECONFIG=/root/.kube/config
+export KUBEVIRT_REPO="kubernetes/kubernetes"
 export KUBEVIRT_REPO="kubevirt/kubevirt"
 export CDI_REPO="kubevirt/containerized-data-importer"
 export OLM_REPO="operator-framework/operator-lifecycle-manager"
 export ROOK_REPO="rook/rook"
+{% if kubernetes_version == 'latest' %}
+export KUBERNETES_VERSION=$(curl -s https://api.github.com/repos/$KUBEVIRT_REPO/releases|grep tag_name|sort -V | tail -1 | awk -F':' '{print $2}' | sed 's/,//' | xargs)
+{% else %}
+export KUBERNETES_VERSION={{ kubernetes_version }}
+{% endif %}
 {% if kubevirt_version == 'latest' %}
 export KUBEVIRT_VERSION=$(curl -s https://api.github.com/repos/$KUBEVIRT_REPO/releases|grep tag_name|sort -V | tail -1 | awk -F':' '{print $2}' | sed 's/,//' | xargs)
 {% else %}
