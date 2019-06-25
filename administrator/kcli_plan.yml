@@ -2,7 +2,7 @@ parameters:
  template: CentOS-7-x86_64-GenericCloud.qcow2
  network: default
  pool: default
- kubernetes_version: latest
+ kubernetes_version: '1.15.0'
  kubevirt_version: latest
  cdi_version: latest
  rook_version: latest
@@ -39,6 +39,7 @@ kni-kubernetes:
  tags: {{ tags }}
  keys: {{ keys }}
  domain: {{ domain }}
+ privatekey: true
  nets:
   - name: {{ network }}
   - name: provisioningnet
@@ -64,6 +65,7 @@ kni-kubernetes:
   - rook.yml
   - ironic.sh
   - deploy.sh
+  - kni-node01.yml
 {% if deploy %}
  scripts:
   - deploy.sh

@@ -26,7 +26,7 @@ chown root:root $WORKING_DIR
 chmod 755 $WORKING_DIR
 mkdir -p "$IRONIC_DATA_DIR/html/images"
 pushd "$IRONIC_DATA_DIR/html/images"
-[ ! -f ironic-python-agent.initramfs ] || curl --insecure --compressed -L https://images.rdoproject.org/master/rdo_trunk/current-tripleo-rdo/ironic-python-agent.tar | tar -xf -
+curl --insecure --compressed -L https://images.rdoproject.org/master/rdo_trunk/current-tripleo-rdo/ironic-python-agent.tar | tar -xf -
 CENTOS_IMAGE=CentOS-7-x86_64-GenericCloud-1901.qcow2
 curl --insecure --compressed -O -L http://cloud.centos.org/centos/7/images/${CENTOS_IMAGE}
 curl --insecure --compressed -O -L http://cloud.centos.org/centos/7/images/${CENTOS_IMAGE}.md5sum
@@ -37,7 +37,7 @@ mariadb_password=$(echo $(date;hostname)|sha256sum |cut -c-20)
 # Create pod
 #podman pod create -n ironic-pod 
 mkdir -p $IRONIC_DATA_DIR
-# docker run -d --net host --privileged --name dnsmasq -v $IRONIC_DATA_DIR:/shared --entrypoint /bin/rundnsmasq --env PROVISIONING_INTERFACE=$provisioning_interface --env DNSMASQ_EXCEPT_INTERFACE=$provisioning_interface ${IRONIC_IMAGE}
+docker run -d --net host --privileged --name dnsmasq -v $IRONIC_DATA_DIR:/shared --entrypoint /bin/rundnsmasq --env PROVISIONING_INTERFACE=$provisioning_interface --env DNSMASQ_EXCEPT_INTERFACE=eth0 ${IRONIC_IMAGE}
 docker run -d --net host --privileged --name httpd -v $IRONIC_DATA_DIR:/shared --entrypoint /bin/runhttpd ${IRONIC_IMAGE}
 docker run -d --net host --privileged --name mariadb -v $IRONIC_DATA_DIR:/shared --entrypoint /bin/runmariadb -e MARIADB_PASSWORD=$mariadb_password ${IRONIC_IMAGE}
 docker run -d --net host --privileged --name ironic -e MARIADB_PASSWORD=$mariadb_password -v $IRONIC_DATA_DIR:/shared -e PROVISIONING_INTERFACE=$provisioning_interface ${IRONIC_IMAGE}
