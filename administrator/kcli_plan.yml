@@ -75,7 +75,7 @@ kni-node01:
  pool: {{ pool }}
  start: false
  numcpus: 4
- memory: 1024
+ memory: 4096
  nets:
  - name: provisioningnet
    mac: 00:c2:fc:3b:e1:01
