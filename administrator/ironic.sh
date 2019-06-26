@@ -19,7 +19,10 @@ mkdir -p "/opt/metal3-dev-env/html/images"
 pushd "/opt/metal3-dev-env/html/images"
 curl --insecure --compressed -L https://images.rdoproject.org/master/rdo_trunk/current-tripleo-rdo/ironic-python-agent.tar | tar -xf -
 curl --insecure --compressed -O -L http://cloud.centos.org/centos/7/images/CentOS-7-x86_64-GenericCloud-1901.qcow2
-md5sum CentOS-7-x86_64-GenericCloud-1901.qcow2 | awk '{print $1}' > CentOS-7-x86_64-GenericCloud-1901.qcow2.md5sum
+#md5sum CentOS-7-x86_64-GenericCloud-1901.qcow2 | awk '{print $1}' > CentOS-7-x86_64-GenericCloud-1901.qcow2.md5sum
+#wget -O rhcos.qcow2.gz https://releases-rhcos.svc.ci.openshift.org/storage/releases/ootpa/410.8.20190520.1/rhcos-410.8.20190520.1-openstack.qcow2
+#gunzip rhcos.qcow2.gz
+#md5sum rhcos.qcow2 | awk '{print $1}' > rhcos.qcow2.md5sum
 chmod 777 /opt/metal3-dev-env/html/images/*
 popd
 

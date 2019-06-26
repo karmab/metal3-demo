@@ -24,6 +24,7 @@ parameters:
  knative: false
  kafka: false
  olm: true
+ nodes: 1
 
 provisioning:
  type: network
@@ -72,7 +73,8 @@ kni-kubernetes:
   - deploy.sh
 {% endif %}
 
-kni-node01:
+{% for num in range(0, nodes) %}
+kni-node{{ "%02.d" | format(num + 1) }}:
  pool: {{ pool }}
  start: false
  numcpus: 4
@@ -81,5 +83,6 @@ kni-node01:
  - size: 20
  nets:
  - name: provisioning
-   mac: 00:c2:fc:3b:e1:01
+   mac: 00:c2:fc:3b:e1:{{ "%02.d" | format(num + 1) }}
  - name: default
+{% endfor %}
