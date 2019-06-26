@@ -35,6 +35,7 @@ kni-kubernetes:
  template: {{ template }}  
  pool: {{ pool }}
  numcpus: {{ numcpus }}
+ reservedns: true
  memory: {{ memory }}
  tags: {{ tags }}
  keys: {{ keys }}

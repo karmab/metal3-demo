@@ -24,9 +24,9 @@ popd
 
 mariadb_password=$(echo $(date;hostname)|sha256sum |cut -c-20)
 mkdir -p /opt/metal3-dev-env
-docker run -d --net host --privileged --name dnsmasq -v /opt/metal3-dev-env:/shared --entrypoint /bin/rundnsmasq --env eth1 --env DNSMASQ_EXCEPT_INTERFACE=eth0 quay.io/metal3-io/ironic:master
+docker run -d --net host --privileged --name dnsmasq -v /opt/metal3-dev-env:/shared --entrypoint /bin/rundnsmasq -e PROVISIONING_INTERFACE=eth1 -e DNSMASQ_EXCEPT_INTERFACE=eth0 quay.io/metal3-io/ironic:master
 docker run -d --net host --privileged --name httpd -v /opt/metal3-dev-env:/shared --entrypoint /bin/runhttpd quay.io/metal3-io/ironic:master
 docker run -d --net host --privileged --name mariadb -v /opt/metal3-dev-env:/shared --entrypoint /bin/runmariadb -e MARIADB_PASSWORD=$mariadb_password quay.io/metal3-io/ironic:master
 docker run -d --net host --privileged --name ironic -e MARIADB_PASSWORD=$mariadb_password -v /opt/metal3-dev-env:/shared -e PROVISIONING_INTERFACE=eth1 quay.io/metal3-io/ironic:master
 docker run -d --net host --privileged --name ironic-inspector -e PROVISIONING_INTERFACE=eth1 quay.io/metal3-io/ironic-inspector
-sed -i s@http://:80@http://172.22.0.1:80@ /opt/metal3-dev-env/ironic/html/inspector.ipxe
+sed -i s@http://:80@http://172.22.0.1:80@ /opt/metal3-dev-env/html/inspector.ipxe
