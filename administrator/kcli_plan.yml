@@ -17,13 +17,13 @@ parameters:
  keys: []
  tags: [cnvlab]
  bmo: true
- kubevirt: false
+ kubevirt: true
  cdi: false
- rook: false
+ rook: true
  istio: false
  knative: false
  kafka: false
- olm: false
+ olm: true
 
 provisioningnet:
  type: network
@@ -76,6 +76,9 @@ kni-node01:
  start: false
  numcpus: 4
  memory: 4096
+ disks:
+ - size: 10
+   interface: sata
  nets:
  - name: provisioningnet
    mac: 00:c2:fc:3b:e1:01

@@ -1,7 +1,7 @@
 source /root/env.sh
 cd /root
 git clone https://github.com/$ROOK_REPO
-cd $ROOK_REPO
+cd rook
 git checkout $ROOK_VERSION
 cd cluster/examples/kubernetes/ceph
 kubectl create -f common.yaml
