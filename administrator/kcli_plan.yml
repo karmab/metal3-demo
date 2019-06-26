@@ -24,7 +24,7 @@ parameters:
  knative: false
  kafka: false
  olm: true
- nodes: 1
+ nodes: 2
 
 provisioning:
  type: network
@@ -68,6 +68,7 @@ kni-kubernetes:
   - ironic.sh
   - deploy.sh
   - kni-node01.yml
+  - kni-node02.yml
 {% if deploy %}
  scripts:
   - deploy.sh
