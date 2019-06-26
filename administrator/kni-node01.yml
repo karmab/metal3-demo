@@ -34,5 +34,5 @@ spec:
     namespace: baremetal
   bootMACAddress: 00:c2:fc:3b:e1:01
   description: ""
-  hardwareProfile: "libvirt"
+  hardwareProfile: ""
   online: true
