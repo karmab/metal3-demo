@@ -1,5 +1,5 @@
 source /root/env.sh
-namespace="baremetal"
+namespace="metal3"
 cd /root
 git clone https://github.com/metal3-io/baremetal-operator
 cd baremetal-operator

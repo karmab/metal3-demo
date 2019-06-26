@@ -78,7 +78,7 @@ kni-node01:
  numcpus: 4
  memory: 4096
  disks:
- - size: 10
+ - size: 20
    interface: sata
  nets:
  - name: provisioningnet
