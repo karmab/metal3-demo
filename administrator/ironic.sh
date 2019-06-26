@@ -12,8 +12,6 @@ systemctl enable --now virtualbmc
 ssh-keyscan -H 192.168.122.1 >> ~/.ssh/known_hosts
 vbmc add kni-node01 --port 6230 --username admin --password admin --libvirt-uri qemu+ssh://root@192.168.122.1/system
 vbmc start kni-node01
-vbmc add kni-node02 --port 6231 --username admin --password admin --libvirt-uri qemu+ssh://root@192.168.122.1/system
-vbmc start kni-node02
 mkdir /opt/metal3-dev-env
 chown root:root /opt/metal3-dev-env
 chmod 755 /opt/metal3-dev-env
@@ -22,9 +20,9 @@ pushd "/opt/metal3-dev-env/html/images"
 curl --insecure --compressed -L https://images.rdoproject.org/master/rdo_trunk/current-tripleo-rdo/ironic-python-agent.tar | tar -xf -
 curl --insecure --compressed -O -L http://cloud.centos.org/centos/7/images/CentOS-7-x86_64-GenericCloud-1901.qcow2
 md5sum CentOS-7-x86_64-GenericCloud-1901.qcow2 | awk '{print $1}' > CentOS-7-x86_64-GenericCloud-1901.qcow2.md5sum
-wget -O rhcos.qcow2.gz https://releases-rhcos.svc.ci.openshift.org/storage/releases/ootpa/410.8.20190520.1/rhcos-410.8.20190520.1-openstack.qcow2
-gunzip rhcos.qcow2.gz
-md5sum rhcos.qcow2 | awk '{print $1}' > rhcos.qcow2.md5sum
+#wget -O rhcos.qcow2.gz https://releases-rhcos.svc.ci.openshift.org/storage/releases/ootpa/410.8.20190520.1/rhcos-410.8.20190520.1-openstack.qcow2
+#gunzip rhcos.qcow2.gz
+#md5sum rhcos.qcow2 | awk '{print $1}' > rhcos.qcow2.md5sum
 chmod 777 /opt/metal3-dev-env/html/images/*
 popd
 
