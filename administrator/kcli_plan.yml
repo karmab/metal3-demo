@@ -81,8 +81,10 @@ kni-node{{ "%02.d" | format(num + 1) }}:
  start: false
  numcpus: 4
  memory: 8192
+ cloudinit: false
  disks:
- - size: 20
+ - size: {{ disk_size }}
+ - size: {{ rook_disk_size }}
  nets:
  - name: provisioning
    mac: 00:c2:fc:3b:e1:{{ "%02.d" | format(num + 1) }}

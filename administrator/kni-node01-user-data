@@ -21,6 +21,14 @@ ssh_pwauth: True
 disable_root: false
 write_files:
 - owner: root:root
+  path: /etc/sysconfig/network-scripts/ifcfg-eth1
+  permissions: '0664'
+  content: |
+     DEVICE=eth1
+     NAME=eth1
+     ONBOOT=yes
+     BOOTPROTO=dhcp
+- owner: root:root
   path: /etc/yum.repos.d/kubernetes.repo
   permissions: '0600'
   content: |

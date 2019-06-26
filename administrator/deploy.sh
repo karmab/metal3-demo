@@ -1,5 +1,6 @@
 mkdir /root/install
 sh /root/kubernetes.sh > /root/install/kubernetes.log 2>&1
+sh /root/prepare-user-data.sh
 {% if bmo -%}
 sh /root/baremetal.sh > /root/install/baremetal.log 2>&1
 sh /root/ironic.sh  > /root/install/ironic.log 2>&1
