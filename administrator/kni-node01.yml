@@ -34,5 +34,5 @@ spec:
     namespace: metal3
   bootMACAddress: 00:c2:fc:3b:e1:01
   description: ""
-  hardwareProfile: ""
+  hardwareProfile: "libvirt"
   online: true

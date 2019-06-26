@@ -25,7 +25,7 @@ parameters:
  kafka: false
  olm: true
 
-provisioningnet:
+provisioning:
  type: network
  cidr: 172.23.0.0/24
  dhcp: false
@@ -43,7 +43,7 @@ kni-kubernetes:
  privatekey: true
  nets:
   - name: {{ network }}
-  - name: provisioningnet
+  - name: provisioning
     noconf: yes
  disks:
   - size: {{ disk_size }}
@@ -76,11 +76,10 @@ kni-node01:
  pool: {{ pool }}
  start: false
  numcpus: 4
- memory: 4096
+ memory: 8192
  disks:
  - size: 20
-   interface: sata
  nets:
- - name: provisioningnet
+ - name: provisioning
    mac: 00:c2:fc:3b:e1:01
  - name: default
