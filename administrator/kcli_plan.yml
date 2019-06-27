@@ -67,9 +67,11 @@ kni-kubernetes:
   - rook.yml
   - ironic.sh
   - deploy.sh
-  - kni-node01.yml
+  - kni-node01-baremetal.yml
+  - kni-node01-machine.yml
   - kni-node01-user-data
   - prepare-user-data.sh
+  - provider-components.yaml
 {% if deploy %}
  scripts:
   - deploy.sh

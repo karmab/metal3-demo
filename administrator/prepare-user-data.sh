@@ -6,4 +6,4 @@ sed -i "s/IP/$IP/" /root/kni-node01-user-data
 sed -i "s/TOKEN/$TOKEN/" /root/kni-node01-user-data
 sed -i "s/HASH/$HASH/" /root/kni-node01-user-data
 DATA=$(cat /root/kni-node01-user-data | base64 -w 0)
-sed -i "s@DATA@$DATA@" /root/kni-node01.yml
+sed -i "s@DATA@$DATA@" /root/kni-node01-machine.yml

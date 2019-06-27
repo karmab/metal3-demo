@@ -11,3 +11,4 @@ kubectl apply -f deploy/role.yaml --namespace=$namespace
 kubectl apply -f deploy/role_binding.yaml
 kubectl apply -f deploy/crds/metal3_v1alpha1_baremetalhost_crd.yaml
 kubectl apply -f deploy/operator.yaml --namespace=$namespace
+cat /root/provider-components.yaml | kubectl apply -f -
