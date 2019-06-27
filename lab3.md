@@ -1,131 +1,64 @@
-## Use CDI
+## Use KubeVirt to create a legacy VM
 
-[CDI](https://github.com/kubevirt/containerized-data-importer) is an utility designed to import Virtual Machine images for use with Kubevirt. 
+### Create a Virtual Machine
 
-At a high level, a persistent volume claim (PVC) is created. A custom controller watches for importer specific claims, and when discovered, starts an import process to create a raw image named *disk.img* with the desired content into the associated PVC.
-
-#### Install CDI
-
-To install Cdi, we first deploy The operator
+Explore The VM Manifest. Note it uses a [container disk](https://kubevirt.io/user-guide/docs/latest/creating-virtual-machines/disks-and-volumes.html#containerdisk) and as such doesn't persist data. Such container disks currently exist for alpine, cirros and fedora.
 
 ```
-kubectl create -f ~/cdi-operator.yaml
+cat ~/vm_containerdisk.yml
 ```
 
-Sample Output:
-
-```
-namespace/cdi created
-serviceaccount/cdi-operator created
-clusterrolebinding.rbac.authorization.k8s.io/cdi-operator created
-configmap/cdi-controler-leader-election created
-deployment.apps/cdi-operator created
-customresourcedefinition.apiextensions.k8s.io/cdis.cdi.kubevirt.io created
-```
-
-Now that operator got deployed , we install Cdi
-
-```
-kubectl create -f ~/cdi-operator-cr.yaml
-```
-
-Sample Output:
-
-```
-cdi.cdi.kubevirt.io/cdi created
-```
-
-Review the objects that were added:
-
-```
-kubectl get pods -n cdi
-```
-
-Sample Output:
-
-```
-NAME                               READY     STATUS    RESTARTS   AGE
-cdi-apiserver-7cb6cbc489-kmj98     1/1       Running   0          38s
-cdi-deployment-798748c78-vhrx5     1/1       Running   0          38s
-cdi-operator-7c6c88b68f-84h54      1/1       Running   0          1m
-cdi-uploadproxy-7cc65c589f-srnmw   1/1       Running   0          38s
-```
-
-#### Use CDI
-
-As an example, we will import a Cirros Cloud Image as a PVC and launch a Virtual Machine making use of it.
+Launch this vm:
 
 ```
 kubectl project myproject
-kubectl create -f ~/pvc_cirros.yml
+kubectl create -f ~/vm_containerdisk.yml
 ```
 
-This will create the PVC with a proper annotation so that CDI controller detects it and launches an importer pod to gather the image specified in the *cdi.kubevirt.io/storage.import.endpoint* annotation.
+Output should be similar to the following
 
 ```
-kubectl get pvc cirros -o yaml
-kubectl get pod
-IMPORTER_POD=$(kubectl get pod -l app=containerized-data-importer -o=custom-columns=NAME:.metadata.name --no-headers=true)
-kubectl logs -f $IMPORTER_POD
+  virtualmachine.kubevirt.io "vm1" created
 ```
 
-This is a sample output of the importer pod logs:
+Confirm the vm is ready by checking its underlying pod:
+
+In both commands, the indicated ip can be used to connect to the vm
 
 ```
-# kubectl logs -f $IMPORTER_POD
-I0118 10:40:32.938365       1 importer.go:45] Starting importer
-I0118 10:40:32.939305       1 importer.go:58] begin import process
-I0118 10:40:32.939375       1 importer.go:82] begin import process
-I0118 10:40:32.939417       1 dataStream.go:293] copying "http://download.cirros-cloud.net/0.4.0/cirros-0.4.0-x86_64-disk.img" to "/data/disk.img"...
-I0118 10:40:33.102412       1 prlimit.go:107] ExecWithLimits qemu-img, [info --output=json http://download.cirros-cloud.net/0.4.0/cirros-0.4.0-x86_64-disk.img]
-I0118 10:40:34.975749       1 prlimit.go:107] ExecWithLimits qemu-img, [convert -p -f qcow2 -O raw json: {"file.driver": "http", "file.url": "http://download.cirros-cloud.net/0.4.0/cirros-0.4.0-x86_64-disk.img", "file.timeout": 3600} /data/disk.img]
-I0118 10:40:34.983868       1 qemu.go:189] 0.00
-I0118 10:40:35.525892       1 qemu.go:189] 1.19
-I0118 10:40:35.572275       1 qemu.go:189] 2.38
-....
-....
-I0118 10:40:37.597856       1 qemu.go:189] 98.02
-I0118 10:40:37.598886       1 qemu.go:189] 99.21
-I0118 10:40:37.689849       1 prlimit.go:107] ExecWithLimits qemu-img, [info --output=json /data/disk.img]
-I0118 10:40:37.710083       1 dataStream.go:349] Expanding image size to: 10Gi
-I0118 10:40:37.712784       1 prlimit.go:107] ExecWithLimits qemu-img, [resize -f raw /data/disk.img 10G]
-I0118 10:40:37.729748       1 importer.go:89] import complete
-
+kubectl get pod -o wide
+kubectl get vmi
 ```
 
-As the image downloaded is small, the importer pod might actually have disappeared by the time you check its logs
-
-Notice that the importer downloaded the publically available Cirros Cloud qcow image. Once the importer pod completes, this PVC is ready for use in kubevirt.
-
-Let's create a Virtual Machine making use of it. Review the file *vm_pvc.yml*.
+Sample output:
 
 ```
-cat ~/vm_pvc.yml
-```
-
-Launch this vm
-
-```
-kubectl create -f ~/vm_pvc.yml
-```
-
-This will create and start a Virtual Machine named vm2. We can use the following command to check our Virtual Machine is running and to gather its IP.
-
-```
-# kubectl get  vmi
+# kubectl get pod -o wide
+NAME                      READY     STATUS      RESTARTS   AGE       IP            NODE         NOMINATED NODE
+ara-1-build               0/1       Completed   0          16m       10.124.0.27   student001   <none>
+ara-1-xpxf2               1/1       Running     0          14m       10.124.0.29   student001   <none>
+virt-launcher-vm1-2b2v7   2/2       Running     0          2m        10.124.0.35   student001   <none>
+# kubectl get vmi
 NAME      AGE       PHASE     IP            NODENAME
-vm2       1m        Running   10.124.0.64   student003
+vm1       2m        Running   10.124.0.35   student003
 
 ```
 
+### Connect using service 
 
-Finally, use the gathered ip to connect to the Virtual Machine, create some files, stop and restart the Virtual Machine with virtctl and check how data persists. Use password *gocubsgo* if needed
+We can "expose" any port of the vm so that we can access it from the outside.
+
+Expose the ssh port of your VM:
 
 ```
-ssh cirros@VM_IP
+kubectl create -f ~/vm1_svc.yml
 ```
 
-This concludes this section of the lab.
+Access the VM using the exposed port:
+
+```
+ssh -p 30000 fedora@student<number>.cnvlab.gce.sysdeseng.com
+```
 
 [Next Lab](lab4.md)\
 [Previous Lab](lab2.md)\

@@ -7,22 +7,25 @@ Kni is a concept meaning Kubernetes Native Infrastructure. The aim is to provide
 This lab tries to demonstrate how the following components can be used together to build complex applications native to Kubernetes.
 
 - kubernetes
+- baremetal operator
 - kubevirt and cdi
 - rook
+- istio/knative
 
 This lab doesn't require previous Kni experience.
 
-We will use a dedicated public VM per student where components are already installed.
+We will use a dedicated 
 
 ### Lab Overview
 
-* Import data with cdi into rook
-* Deploy a virtual machine using Kubevirt.
-* Handle connectivity with Multus.
+* Add a worker through the baremetal operator
+* Deploy a database virtual machine using Kubevirt
+* Deploy a 3tier app using containers, a backend operator and our database VM, along with rook storage
+* Launch a batch job on it with serverless
 
 ### Requirements
 
-- Laptop with a modern browser for OCP console
+- Libvirt Box
 - SSH client
 
 ### Relevant Links
