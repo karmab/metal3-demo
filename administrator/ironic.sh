@@ -10,8 +10,8 @@ yum -y install centos-release-openstack-stein.noarch
 yum -y install python2-openstackclient python2-ironicclient python-virtualbmc ipmitool
 systemctl enable --now virtualbmc
 ssh-keyscan -H 192.168.122.1 >> ~/.ssh/known_hosts
-vbmc add kni-node01 --port 6230 --username admin --password admin --libvirt-uri qemu+ssh://root@192.168.122.1/system
-vbmc start kni-node01
+vbmc add metal3-node01 --port 6230 --username admin --password admin --libvirt-uri qemu+ssh://root@192.168.122.1/system
+vbmc start metal3-node01
 mkdir /opt/metal3-dev-env
 chown root:root /opt/metal3-dev-env
 chmod 755 /opt/metal3-dev-env

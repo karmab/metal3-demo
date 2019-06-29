@@ -1,5 +1,5 @@
 
-This repository provides instructions on how to deploy an arbitrary number of vms on libvirt with kni ecosystem installed on it
+This repository provides instructions on how to deploy an arbitrary number of vms on libvirt with metal3 ecosystem installed on it
 
 ## Requirements
 

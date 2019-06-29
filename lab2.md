@@ -3,7 +3,7 @@
 BMO is already deployed
 
 ```
-kubectl create -f kni-node01-machine.yml 
+kubectl create -f metal3-node01-machine.yml 
 ```
 
 check baremetal hosts
@@ -15,7 +15,7 @@ kubectl get baremetalhost -n metal3
 check machines
 
 ```
-kubectl get machine -n metal3 kni-node01
+kubectl get machine -n metal3 metal3-node01
 ```
 
 ```

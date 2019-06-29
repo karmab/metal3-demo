@@ -2,7 +2,9 @@
 
 ### Abstract
 
-Kni is a concept meaning Kubernetes Native Infrastructure. The aim is to provide a common ground for virtualization and storage solution on top of Kubernetes.
+Metal3 project aims to easily provision kubernetes on baremetal
+
+We then showcase how we can use it as a common ground for virtualization and storage solution on top.
 
 This lab tries to demonstrate how the following components can be used together to build complex applications native to Kubernetes.
 
@@ -12,7 +14,7 @@ This lab tries to demonstrate how the following components can be used together 
 - rook
 - istio/knative
 
-This lab doesn't require previous Kni experience.
+This lab doesn't require previous Metal3 experience.
 
 We will use a dedicated 
 

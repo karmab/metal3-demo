@@ -32,7 +32,7 @@ provisioning:
  dhcp: false
  nat: true
 
-kni-kubernetes:
+metal3-kubernetes:
  template: {{ template }}  
  pool: {{ pool }}
  numcpus: {{ numcpus }}
@@ -67,9 +67,9 @@ kni-kubernetes:
   - rook.yml
   - ironic.sh
   - deploy.sh
-  - kni-node01-baremetal.yml
-  - kni-node01-machine.yml
-  - kni-node01-user-data
+  - metal3-node01-baremetal.yml
+  - metal3-node01-machine.yml
+  - metal3-node01-user-data
   - prepare-user-data.sh
   - provider-components.yaml
 {% if deploy %}
@@ -78,7 +78,7 @@ kni-kubernetes:
 {% endif %}
 
 {% for num in range(0, nodes) %}
-kni-node{{ "%02.d" | format(num + 1) }}:
+metal3-node{{ "%02.d" | format(num + 1) }}:
  pool: {{ pool }}
  start: false
  numcpus: 4
