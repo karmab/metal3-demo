@@ -1,0 +1,26 @@
+apiVersion: v1	
+kind: Secret	
+metadata:	
+  name: kni-node01-credentials	
+  namespace: metal3	
+type: Opaque	
+data:	
+  username: YWRtaW4=	
+  password: YWRtaW4=	
+---	
+apiVersion: metal3.io/v1alpha1	
+kind: BareMetalHost	
+metadata:	
+  name: kni-node01	
+  namespace: metal3	
+spec:	
+  bmc:	
+    address: ipmi://172.22.0.1:6230	
+    credentialsName: kni-node01-credentials	
+  image:	
+    url: http://172.22.0.1/images/CentOS-7-x86_64-GenericCloud-1901.qcow2	
+    checksum: http://172.22.0.1/images/CentOS-7-x86_64-GenericCloud-1901.qcow2.md5sum	
+  bootMACAddress: 00:c2:fc:3b:e1:01	
+  description: ""	
+  hardwareProfile: "libvirt"	
+  online: true

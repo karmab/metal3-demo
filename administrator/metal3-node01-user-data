@@ -1,0 +1,52 @@
+#cloud-config	
+hostname: prout	
+ssh_pwauth: True	
+disable_root: false	
+fqdn: kni-node01.karmalabs.com	
+ssh_authorized_keys:	
+- ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC/AvM9VbO2yiIb9AillBp/kTr8jqIErRU1LFKqhwPTm4AtVIjFSaOuM4AlspfCUIz9IHBrDcZmbcYKai3lC3JtQic7M/a1OWUjWE1ML8CEvNsGPGu5yNVUQoWC0lmW5rzX9c6HvH8AcmfMmdyQ7SgcAnk0zir9jw8ed2TRAzHn3vXFd7+saZLihFJhXG4zB8vh7gJHjLfjIa3JHptWzW9AtqF9QsoBY/iu58Rf/hRnrfWscyN3x9pGCSEqdLSDv7HFuH2EabnvNFFQZr4J1FYzH/fKVY3Ppt3rf64UWCztDu7L44fPwwkI7nAzdmQVTaMoD3Ej8i7/OSFZsC2V5IBT kboumedh@bumblefoot	
+runcmd:	
+- echo unix1234 | passwd --stdin root	
+- K8S="1.15.0"	
+- echo net.bridge.bridge-nf-call-iptables=1 >> /etc/sysctl.d/99-sysctl.conf	
+- sysctl -p	
+- setenforce 0	
+- sed -i "s/SELINUX=enforcing/SELINUX=permissive/" /etc/selinux/config	
+- yum install -y docker kubelet-$K8S kubectl-$K8S kubeadm-$K8S	
+- sed -i "s/--selinux-enabled //" /etc/sysconfig/docker	
+- systemctl enable --now docker	
+- systemctl enable --now kubelet	
+- kubeadm join --config /root/join.yml	
+ssh_pwauth: True	
+disable_root: false	
+write_files:	
+- owner: root:root	
+  path: /etc/sysconfig/network-scripts/ifcfg-eth1	
+  permissions: '0664'	
+  content: |	
+     DEVICE=eth1	
+     NAME=eth1	
+     ONBOOT=yes	
+     BOOTPROTO=dhcp	
+- owner: root:root	
+  path: /etc/yum.repos.d/kubernetes.repo	
+  permissions: '0600'	
+  content: |	
+     [kubernetes]	
+     name=Kubernetes	
+     baseurl=https://packages.cloud.google.com/yum/repos/kubernetes-el7-x86_64	
+     enabled=1	
+     gpgcheck=0	
+     repo_gpgcheck=0	
+- owner: root:root	
+  path: /root/join.yml	
+  permissions: '0600'	
+  content: |	
+     apiVersion: kubeadm.k8s.io/v1beta1	
+     kind: JoinConfiguration	
+     discovery:	
+       bootstrapToken:	
+         apiServerEndpoint: IP:6443	
+         token: TOKEN	
+         caCertHashes:	
+         - sha256:HASH

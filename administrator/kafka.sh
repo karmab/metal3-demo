@@ -1,3 +1,4 @@
+KAFKA_VERSION="0.12.0"
 kubectl create namespace kafka
 curl -L https://github.com/strimzi/strimzi-kafka-operator/releases/download/$KAFKA_VERSION/strimzi-cluster-operator-$KAFKA_VERSION.yaml \
   | sed 's/namespace: .*/namespace: kafka/' \
