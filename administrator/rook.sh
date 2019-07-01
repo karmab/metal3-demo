@@ -1,5 +1,6 @@
 ROOK_VERSION=${ROOK_VERSION:-latest}
 [ "$ROOK_VERSION" == "latest" ] && ROOK_VERSION=$(curl -s https://api.github.com/repos/rook/rook/releases|grep tag_name|sort -V | tail -1 | awk -F':' '{print $2}' | sed 's/,//' | xargs)
+export KUBECONFIG=/root/.kube/config
 cd /root
 git clone https://github.com/rook/rook
 cd rook

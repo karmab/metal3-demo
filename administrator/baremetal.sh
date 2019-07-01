@@ -1,3 +1,4 @@
+export KUBECONFIG=/root/.kube/config
 cd /root
 git clone https://github.com/metal3-io/baremetal-operator
 cd baremetal-operator
@@ -9,3 +10,4 @@ kubectl apply -f deploy/role_binding.yaml
 kubectl apply -f deploy/crds/metal3_v1alpha1_baremetalhost_crd.yaml
 kubectl apply -f deploy/operator.yaml --namespace=metal3
 cat /root/provider-components.yaml | kubectl apply -f - --namespace=metal3
+kubectl config set-context kubernetes-admin@kubernetes --namespace=metal3

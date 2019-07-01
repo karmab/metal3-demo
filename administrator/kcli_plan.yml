@@ -2,11 +2,6 @@ parameters:
  template: CentOS-7-x86_64-GenericCloud.qcow2
  network: default
  pool: default
- kubernetes_version: '1.15.0'
- kubevirt_version: latest
- cdi_version: latest
- rook_version: latest
- olm_version: latest
  domain: karmalabs.com
  disk_size: 20
  rook_disk_size: 30
@@ -24,7 +19,7 @@ parameters:
  knative: false
  kafka: false
  olm: true
- nodes: 1
+ nodes: 2
 
 provisioning:
  type: network
@@ -50,8 +45,6 @@ metal3-kubernetes:
   - size: {{ disk_size }}
   - size: {{ rook_disk_size }}
  files: 
-  - path: /etc/environment
-    origin: environment
   - kubernetes.sh
   - path: /etc/yum.repos.d/kubernetes.repo
     origin: kubernetes.repo

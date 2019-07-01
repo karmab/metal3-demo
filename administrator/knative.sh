@@ -1,4 +1,5 @@
 KNATIVE_VERSION="v0.6.0"
+export KUBECONFIG=/root/.kube/config
 kubectl apply --selector knative.dev/crd-install=true \
    --filename https://github.com/knative/serving/releases/download/$KNATIVE_VERSION/serving.yaml \
    --filename https://github.com/knative/build/releases/download/$KNATIVE_VERSION/build.yaml \

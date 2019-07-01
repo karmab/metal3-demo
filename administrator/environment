@@ -1,8 +1,0 @@
-KUBECONFIG=/root/.kube/config
-OS_TOKEN=fake-token
-OS_URL=http://localhost:6385
-KUBERNETES_VERSION={{ kubernetes_version }}
-KUBEVIRT_VERSION={{ kubevirt_version }}
-CDI_VERSION={{ cdi_version }}
-ROOK_VERSION={{ rook_version }}
-OLM_VERSION={{ olm_version }}

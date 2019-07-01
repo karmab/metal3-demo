@@ -34,3 +34,5 @@ docker run -d --net host --privileged --name mariadb -v /opt/metal3-dev-env:/sha
 docker run -d --net host --privileged --name ironic -e MARIADB_PASSWORD=$mariadb_password -v /opt/metal3-dev-env:/shared -e PROVISIONING_INTERFACE=eth1 quay.io/metal3-io/ironic:master
 docker run -d --net host --privileged --name ironic-inspector -e PROVISIONING_INTERFACE=eth1 quay.io/metal3-io/ironic-inspector
 sed -i s@http://:80@http://172.22.0.1:80@ /opt/metal3-dev-env/html/inspector.ipxe
+echo export OS_TOKEN=fake-token > /etc/profile.d/ironic.sh
+echo export OS_URL=http://localhost:6385 >> /etc/profile.d/ironic.sh
