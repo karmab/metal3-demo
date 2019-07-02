@@ -19,7 +19,7 @@ parameters:
  knative: false
  kafka: false
  olm: true
- nodes: 2
+ nodes: 1
 
 provisioning:
  type: network
