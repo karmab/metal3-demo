@@ -64,6 +64,8 @@ metal3-kubernetes:
   - metal3-node01-user-data
   - prepare-user-data.sh
   - provider-components.yaml
+  - tvshows-user-data
+  - kubevirt_tvshows.yml
 {% if deploy %}
  scripts:
   - deploy.sh

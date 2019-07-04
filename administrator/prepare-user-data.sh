@@ -11,3 +11,4 @@ SSHKEY=$(cat /root/.ssh/id_rsa.pub)
 sed -i "s%SSHKEY%$SSHKEY%" /root/metal3-node01-user-data
 DATA=$(cat /root/metal3-node01-user-data | base64 -w 0)
 sed -i "s@DATA@$DATA@" /root/metal3-node01-machine.yml
+sed -i "s%SSHKEY%$SSHKEY%" /root/tvshows-user-data

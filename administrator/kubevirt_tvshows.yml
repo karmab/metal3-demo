@@ -1,0 +1,51 @@
+apiVersion: kubevirt.io/v1alpha3
+kind: VirtualMachine
+metadata:
+  labels:
+    kubevirt.io/os: linux
+    special: vmi-migratable
+  name: tvshows
+  namespace: default
+spec:
+  running: true
+  template:
+    metadata:
+      labels:
+        kubevirt.io/domain: tvshows
+    spec:
+      domain:
+        cpu:
+          cores: 2
+        devices:
+          disks:
+          - disk:
+              bus: virtio
+            name: tvshows-disk0
+          - disk:
+              bus: virtio
+            name: tvshows-disk1
+          - cdrom:
+              bus: sata
+            name: cloudinitdisk
+          interfaces:
+          - bridge: {}
+            name: default
+        machine:
+          type: q35
+        resources:
+          requests:
+            memory: 4096M
+      networks:
+      - name: default
+        pod: {}
+      volumes:
+      - containerDisk:
+          image: kubevirt/fedora-cloud-container-disk-demo:latest
+        name: tvshows-disk0
+      - name: tvshows-disk1
+        persistentVolumeClaim:
+          claimName: tvshows-disk1
+      - name: tvshows-disk1
+        cloudInitNoCloud:
+          secretRef:
+           name: tvshows-secret

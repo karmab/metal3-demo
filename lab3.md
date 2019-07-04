@@ -11,14 +11,14 @@ cat ~/vm_containerdisk.yml
 Launch this vm:
 
 ```
-kubectl project myproject
-kubectl create -f ~/vm_containerdisk.yml
+kubectl create secret generic tvshows-secret --from-file=userdata=/root/tvshows-user-data -n default
+kubectl create -f /root/kubevirt_tvshows.yml -n default
 ```
 
 Output should be similar to the following
 
 ```
-  virtualmachine.kubevirt.io "vm1" created
+  virtualmachine.kubevirt.io "tvshows" created
 ```
 
 Confirm the vm is ready by checking its underlying pod:
@@ -33,15 +33,12 @@ kubectl get vmi
 Sample output:
 
 ```
-# kubectl get pod -o wide
-NAME                      READY     STATUS      RESTARTS   AGE       IP            NODE         NOMINATED NODE
-ara-1-build               0/1       Completed   0          16m       10.124.0.27   student001   <none>
-ara-1-xpxf2               1/1       Running     0          14m       10.124.0.29   student001   <none>
-virt-launcher-vm1-2b2v7   2/2       Running     0          2m        10.124.0.35   student001   <none>
-# kubectl get vmi
-NAME      AGE       PHASE     IP            NODENAME
-vm1       2m        Running   10.124.0.35   student003
-
+# kubectl get pod -o wide -n default
+NAME                          READY   STATUS    RESTARTS   AGE   IP            NODE                              NOMINATED NODE   READINESS GATES
+virt-launcher-tvshows-m87rf   2/2     Running   0          76s   10.244.0.62   metal3-kubernetes.karmalabs.com   <none>           <none>
+# kubectl get vmi -n default
+NAME      AGE   PHASE     IP            NODENAME
+tvshows   98s   Running   10.244.0.62   metal3-kubernetes.karmalabs.com
 ```
 
 ### Connect using service 
@@ -51,14 +48,10 @@ We can "expose" any port of the vm so that we can access it from the outside.
 Expose the ssh port of your VM:
 
 ```
-kubectl create -f ~/vm1_svc.yml
+kubectl create -f /root/tvshows_service.yml
 ```
 
-Access the VM using the exposed port:
-
-```
-ssh -p 30000 fedora@student<number>.cnvlab.gce.sysdeseng.com
-```
+Access the VM using the exposed port
 
 [Next Lab](lab4.md)\
 [Previous Lab](lab2.md)\

@@ -4,3 +4,5 @@ KUBEVIRT_VERSION=${KUBEVIRT_VERSION:-latest}
 export KUBECONFIG=/root/.kube/config
 kubectl create -f https://github.com/kubevirt/kubevirt/releases/download/$KUBEVIRT_VERSION/kubevirt-operator.yaml
 kubectl create -f https://github.com/kubevirt/kubevirt/releases/download/$KUBEVIRT_VERSION/kubevirt-cr.yaml
+curl -L https://github.com/kubevirt/kubevirt/releases/download/$KUBEVIRT_VERSION/virtctl-$KUBEVIRT_VERSION-linux-amd64 > /usr/bin/virtctl
+chmod u+x /usr/bin/virtctl

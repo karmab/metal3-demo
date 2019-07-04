@@ -1,0 +1,20 @@
+#cloud-config
+hostname: tvshow
+ssh_pwauth: True
+disable_root: false
+ssh_authorized_keys:
+- SSHKEY
+runcmd:
+- yum -y install mariadb-server git
+- echo /var/lib/mysql /dev/vdb xfs defaults 0 0 >> /etc/fstab
+- chown mysql.mysql /var/lib/mysql
+- sed -i '/\[server\]/a  bind-address=0.0.0.0' /etc/my.cnf.d/mariadb-server.cnf
+- systemctl enable --now mariadb
+- git clone https://github.com/karmab/tvshows
+- cd tvshows
+- git checkout v1
+- python3 setup.py install
+- cp tvshows.service /usr/lib/systemd/system
+- restorecon /usr/lib/systemd/system/tvshows.service
+- systemctl enable --now tvshows
+- mysql < load.sql
