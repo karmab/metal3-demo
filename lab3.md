@@ -48,10 +48,10 @@ We can "expose" any port of the vm so that we can access it from the outside.
 Expose the ssh port of your VM:
 
 ```
-kubectl create -f /root/tvshows_service.yml
+kubectl create -f /root/kubevirt_tvshows_service.yml -n default
 ```
 
-Access the VM using the exposed port
+Access the VM using the exposed port 30000
 
 [Next Lab](lab4.md)\
 [Previous Lab](lab2.md)\
