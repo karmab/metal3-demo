@@ -26,3 +26,6 @@ sh /root/kafka.sh  > /root/install/kafka.log 2>&1
 {% if olm -%}
 sh /root/olm.sh  > /root/install/olm.log 2>&1
 {%- endif %}
+{% if metallb -%}
+sh /root/metallb.sh  > /root/install/metallb.log 2>&1
+{%- endif %}

@@ -8,11 +8,11 @@ parameters:
  numcpus: 8
  memory: 12288
  deploy: true
- emulation: false
  keys: []
  tags: [cnvlab]
  bmo: true
  kubevirt: true
+ metallb: true
  cdi: false
  rook: true
  istio: false
@@ -58,6 +58,7 @@ metal3-kubernetes:
   - rook.sh
   - rook.yml
   - ironic.sh
+  - metallb.sh
   - deploy.sh
   - metal3-node01-baremetal.yml
   - metal3-node01-machine.yml
@@ -66,6 +67,12 @@ metal3-kubernetes:
   - provider-components.yaml
   - tvshows-user-data
   - kubevirt_tvshows.yml
+  - path: kubevirt_tvshows_svc.yml
+{% if metallb %}
+  - origin: kubevirt_tvshows_svc_lb.yml
+{% else %}
+  - origin: kubevirt_tvshows_svc_nodeport.yml
+{% endif %}
 {% if deploy %}
  scripts:
   - deploy.sh

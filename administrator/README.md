@@ -35,10 +35,6 @@ Vms will be accessible using the injected keys and using their fqdn
 |numcpus            | 4                        |
 |memory             | 12288                    |
 |nodes              | 1                        |
-|emulation          | false                    |
-|kubernetes_version | latest                   |
-|kubevirt_version   | latest                   | 
-|cdi_version        | latest                   |
 
 ## Clean up
 
