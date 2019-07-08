@@ -17,9 +17,6 @@ spec:
   bmc:	
     address: ipmi://172.22.0.1:6230	
     credentialsName: metal3-node01-credentials	
-  image:	
-    url: http://172.22.0.1/images/CentOS-7-x86_64-GenericCloud-1901.qcow2	
-    checksum: http://172.22.0.1/images/CentOS-7-x86_64-GenericCloud-1901.qcow2.md5sum	
   bootMACAddress: 00:c2:fc:3b:e1:01	
   description: ""	
   hardwareProfile: "libvirt"	

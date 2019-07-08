@@ -2,11 +2,11 @@
 
 Now that you have completed the lab, let's review what was covered here:
 
-* Explored KubeVirt.
-* Explored CDI
-* Create vms with multiple nics by using Multus.
+* Explored Baremetal Operator and added a kubernetes node with it.
+* Deploy a kubevirt vm and an app on top, using ceph through rook for storage in a transparent way.
+* Migrate this app to a version based on container and using crds
 
-Thanks for participating and don't forget to submit that PR if you find issues. :+1:
+All those objects share one thing in common, they are native to kubernetes so you use the same tooling to interact with them!
 
 [Previous Lab](lab4.md)\
 [Home](README.md)

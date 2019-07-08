@@ -1,7 +1,6 @@
 export KUBECONFIG=/root/.kube/config
 METALLB_VERSION=${METALLB_VERSION:-latest}
-#DEFAULT_RANGE="192.168.122.245-192.168.122.250"
-DEFAULT_RANGE="192.168.1.245-192.168.1.250"
+DEFAULT_RANGE="192.168.122.245-192.168.122.250"
 METALLB_RANGE=${METALLB_RANGE:-$DEFAULT_RANGE}
 [ "$METALLB_VERSION" == "latest" ] && METALLB_VERSION=$(curl -s https://api.github.com/repos/danderson/metallb/releases|grep tag_name|sort -V | tail -1 | awk -F':' '{print $2}' | sed 's/,//' | xargs)
 kubectl apply -f https://raw.githubusercontent.com/google/metallb/$METALLB_VERSION/manifests/metallb.yaml

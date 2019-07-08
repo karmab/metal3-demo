@@ -67,12 +67,8 @@ metal3-kubernetes:
   - provider-components.yaml
   - tvshows-user-data
   - kubevirt_tvshows.yml
-  - path: kubevirt_tvshows_svc.yml
-{% if metallb %}
-  - origin: kubevirt_tvshows_svc_lb.yml
-{% else %}
-  - origin: kubevirt_tvshows_svc_nodeport.yml
-{% endif %}
+  - tvshows_svc_lb.yml
+  - tvshows_svc_lb_v2.yml
 {% if deploy %}
  scripts:
   - deploy.sh
@@ -91,5 +87,5 @@ metal3-node{{ "%02.d" | format(num + 1) }}:
  nets:
  - name: provisioning
    mac: 00:c2:fc:3b:e1:{{ "%02.d" | format(num + 1) }}
- - name: default
+ - name: {{ network }}
 {% endfor %}

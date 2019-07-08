@@ -5,6 +5,7 @@ disable_root: false
 ssh_authorized_keys:
 - SSHKEY
 runcmd:
+- export TVDB_KEY=
 - yum -y install mariadb-server git
 - echo /var/lib/mysql /dev/vdb xfs defaults 0 0 >> /etc/fstab
 - chown mysql.mysql /var/lib/mysql
@@ -14,6 +15,7 @@ runcmd:
 - cd tvshows
 - git checkout v1
 - python3 setup.py install
+- sed -i s/TVDB_KEY=/TVDB_KEY=$TVDB_KEY/ tvshows.service
 - cp tvshows.service /usr/lib/systemd/system
 - restorecon /usr/lib/systemd/system/tvshows.service
 - systemctl enable --now tvshows

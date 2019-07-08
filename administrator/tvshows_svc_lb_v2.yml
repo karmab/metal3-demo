@@ -1,13 +1,14 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: tvshows-web
+  name: tvshows-web-v2
+  namespace: default
 spec:
   ports:
-  - name: tvshows
+  - name: tvshows-v2
     port: 9000
     protocol: TCP
     targetPort: 9000
   selector:
-    kubevirt.io/domain: tvshows
+    app: tvshows
   type: LoadBalancer

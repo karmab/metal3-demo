@@ -20,10 +20,10 @@ spec:
           disks:
           - disk:
               bus: virtio
-            name: tvshows-disk0
+            name: containerdisk
           - disk:
               bus: virtio
-            name: tvshows-disk1
+            name: tvshows-disk
           - cdrom:
               bus: sata
             name: cloudinitdisk
@@ -41,11 +41,11 @@ spec:
       volumes:
       - containerDisk:
           image: kubevirt/fedora-cloud-container-disk-demo:latest
-        name: tvshows-disk0
-      - name: tvshows-disk1
+        name: containerdisk
+      - name: tvshows-disk
         persistentVolumeClaim:
-          claimName: tvshows-disk1
-      - name: tvshows-disk1
+          claimName: tvshows-disk
+      - name: cloudinitdisk
         cloudInitNoCloud:
           secretRef:
            name: tvshows-secret

@@ -1,57 +1,64 @@
-## Use KubeVirt to create a legacy VM
+## Use KubeVirt to create a VM
+
+We are going to create a kubevirt virtualmachine which will run a mysql+flask application based on the code available at https://github.com/karmab/tvshows
 
 ### Create a Virtual Machine
 
-Explore The VM Manifest. Note it uses a [container disk](https://kubevirt.io/user-guide/docs/latest/creating-virtual-machines/disks-and-volumes.html#containerdisk) and as such doesn't persist data. Such container disks currently exist for alpine, cirros and fedora.
+First, we provision a disk to use to store the data of our application, which should get bound a few seconds afterwards
 
-```
-cat ~/vm_containerdisk.yml
-```
-
-Launch this vm:
-
-```
-kubectl create secret generic tvshows-secret --from-file=userdata=/root/tvshows-user-data -n default
-kubectl create -f /root/kubevirt_tvshows.yml -n default
+```console
+[root@metal3-kubernetes ~]# kubectl create -f kubevirt_tvshows_pvc.yml
+persistentvolumeclaim/tvshows-disk created
+[root@metal3-kubernetes ~]# kubectl get pvc -n default
+NAME           STATUS   VOLUME                                     CAPACITY   ACCESS MODES   STORAGECLASS      AGE
+tvshows-disk   Bound    pvc-8cee5c7b-c81c-4f5a-8da1-b6abce1cd4d0   10Gi       RWO            rook-ceph-block   2m50s
 ```
 
-Output should be similar to the following
+Then, we deploy our vm along with a secret to store the userdata for our vm ( as it contains a lot of characters, we can't embed it in the kubevirt definition)
 
-```
-  virtualmachine.kubevirt.io "tvshows" created
-```
+Let's substitute TVDB_KEY environment variable in our secret
 
-Confirm the vm is ready by checking its underlying pod:
-
-In both commands, the indicated ip can be used to connect to the vm
-
-```
-kubectl get pod -o wide
-kubectl get vmi
+```console
+[root@metal3-kubernetes ~]# sed -i "s/export TVDB_KEY=/export TVDB_KEY=$TVDB_KEY/" /root/tvshows-user-data
 ```
 
-Sample output:
+We then deploy the vm:
 
-```
-# kubectl get pod -o wide -n default
-NAME                          READY   STATUS    RESTARTS   AGE   IP            NODE                              NOMINATED NODE   READINESS GATES
-virt-launcher-tvshows-m87rf   2/2     Running   0          76s   10.244.0.62   metal3-kubernetes.karmalabs.com   <none>           <none>
-# kubectl get vmi -n default
-NAME      AGE   PHASE     IP            NODENAME
-tvshows   98s   Running   10.244.0.62   metal3-kubernetes.karmalabs.com
+```console
+[root@metal3-kubernetes ~]# kubectl create secret generic tvshows-secret --from-file=userdata=/root/tvshows-user-data -n default
+secret/tvshows-secret created
+[root@metal3-kubernetes ~]# kubectl create -f /root/kubevirt_tvshows.yml -n default
+virtualmachine.kubevirt.io/tvshows created
 ```
 
-### Connect using service 
+We can see how our vm is running
 
-We can "expose" any port of the vm so that we can access it from the outside.
-
-Expose the ssh port of your VM:
-
-```
-kubectl create -f /root/kubevirt_tvshows_service.yml -n default
+```console
+[root@metal3-kubernetes ~]# kubectl get vmi -n default
+NAME      AGE     PHASE     IP            NODENAME
+tvshows   2m56s   Running   10.244.0.28   metal3-kubernetes.karmalabs.com
 ```
 
-Access the VM using the exposed port 30000
+### Connect to our app
+
+We can connect to our app by exposing a service. For this, we leverage metallb.
+
+Alternatively, a NodePort definition can be used
+
+```console
+[root@metal3-kubernetes ~]# kubectl create -f tvshows_svc_lb.yml
+service/tvshows-web created
+```
+
+we can then use the following command to find out which ip metallb assigned to this service
+
+```console
+[root@metal3-kubernetes ~]# kubectl get svc -n default tvshows-web
+NAME          TYPE           CLUSTER-IP      EXTERNAL-IP     PORT(S)          AGE
+tvshows-web   LoadBalancer   10.110.114.81   192.168.122.245   9000:31580/TCP   54s
+```
+
+Browse to the app and play with it at http://192.168.122.245:9000!
 
 [Next Lab](lab4.md)\
 [Previous Lab](lab2.md)\
