@@ -101,9 +101,8 @@ metal3-node01   OK       provisioned                       ipmi://172.22.0.1:623
 
 It's also visible on the ironic side
 
-
 ```console
-[root@metal3-kubernetes ~]# openstack baremetal node list
+[root@metal3-kubernetes ~]# export OS_TOKEN=fake-token ; export OS_URL=http://localhost:6385 ; openstack baremetal node list
 +--------------------------------------+---------------+--------------------------------------+-------------+--------------------+-------------+
 | UUID                                 | Name          | Instance UUID                        | Power State | Provisioning State | Maintenance |
 +--------------------------------------+---------------+--------------------------------------+-------------+--------------------+-------------+
@@ -117,7 +116,7 @@ Once the machine/baremetal host is provisioned, we can see we have an extra kube
 [root@metal3-kubernetes ~]# kubectl get node
 ```
 
-We have a new worker at our disposal! and it even added as an new node that kubevirt can use ( check the new virt launcher pod)
+We have a new worker at our disposal! and it even added as an new node that kubevirt can use ( check the new virt handler pod)
 
 ```console
 [root@metal3-kubernetes ~]# kubectl get pod -n kubevirt -o wide

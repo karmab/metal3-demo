@@ -1,5 +1,6 @@
 yum -y install centos-release-openstack-stein.noarch bridge-utils
-yum -y install python2-virtualbmc ipmitool
+yum -y install python2-virtualbmc ipmitool  python2-openstackclient python2-ironicclient
+
 echo -e "DEVICE=provisioning\nTYPE=Bridge\nONBOOT=yes\nNM_CONTROLLED=no\nBOOTPROTO=static\nIPADDR=172.22.0.1\nNETMASK=255.255.255.0" > /etc/sysconfig/network-scripts/ifcfg-provisioning
 echo -e "DEVICE=eth1\nTYPE=Ethernet\nONBOOT=yes\nNM_CONTROLLED=no\nBRIDGE=provisioning" > /etc/sysconfig/network-scripts/ifcfg-eth1
 ifup eth1
