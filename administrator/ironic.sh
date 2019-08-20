@@ -1,13 +1,10 @@
-echo """DEVICE=eth1
-ONBOOT=yes
-NM_CONTROLLED=no
-BOOTPROTO=static
-IPADDR=172.22.0.1
-NETMASK=255.255.255.0""" > /etc/sysconfig/network-scripts/ifcfg-eth1
+yum -y install centos-release-openstack-stein.noarch bridge-utils
+yum -y install python2-virtualbmc ipmitool
+echo -e "DEVICE=provisioning\nTYPE=Bridge\nONBOOT=yes\nNM_CONTROLLED=no\nBOOTPROTO=static\nIPADDR=172.22.0.1\nNETMASK=255.255.255.0" > /etc/sysconfig/network-scripts/ifcfg-provisioning
+echo -e "DEVICE=eth1\nTYPE=Ethernet\nONBOOT=yes\nNM_CONTROLLED=no\nBRIDGE=provisioning" > /etc/sysconfig/network-scripts/ifcfg-eth1
 ifup eth1
+ifup provisioning
 
-yum -y install centos-release-openstack-stein.noarch
-yum -y install python2-openstackclient python2-ironicclient python-virtualbmc ipmitool
 systemctl enable --now virtualbmc
 ssh-keyscan -H 192.168.122.1 >> ~/.ssh/known_hosts
 vbmc add metal3-node01 --port 6230 --username admin --password admin --libvirt-uri qemu+ssh://root@192.168.122.1/system
@@ -28,11 +25,11 @@ popd
 
 mariadb_password=$(echo $(date;hostname)|sha256sum |cut -c-20)
 mkdir -p /opt/metal3-dev-env
-docker run -d --net host --privileged --name dnsmasq -v /opt/metal3-dev-env:/shared --entrypoint /bin/rundnsmasq -e PROVISIONING_INTERFACE=eth1 -e DNSMASQ_EXCEPT_INTERFACE=eth0 quay.io/metal3-io/ironic:master
+docker run -d --net host --privileged --name dnsmasq -v /opt/metal3-dev-env:/shared --entrypoint /bin/rundnsmasq -e PROVISIONING_INTERFACE=provisioning -e DNSMASQ_EXCEPT_INTERFACE=eth0 quay.io/metal3-io/ironic:master
 docker run -d --net host --privileged --name httpd -v /opt/metal3-dev-env:/shared --entrypoint /bin/runhttpd quay.io/metal3-io/ironic:master
 docker run -d --net host --privileged --name mariadb -v /opt/metal3-dev-env:/shared --entrypoint /bin/runmariadb -e MARIADB_PASSWORD=$mariadb_password quay.io/metal3-io/ironic:master
-docker run -d --net host --privileged --name ironic -e MARIADB_PASSWORD=$mariadb_password -v /opt/metal3-dev-env:/shared -e PROVISIONING_INTERFACE=eth1 quay.io/metal3-io/ironic:master
-docker run -d --net host --privileged --name ironic-inspector -e PROVISIONING_INTERFACE=eth1 quay.io/metal3-io/ironic-inspector
+docker run -d --net host --privileged --name ironic -e MARIADB_PASSWORD=$mariadb_password -v /opt/metal3-dev-env:/shared -e PROVISIONING_INTERFACE=provisioning quay.io/metal3-io/ironic:master
+docker run -d --net host --privileged --name ironic-inspector -e PROVISIONING_INTERFACE=provisioning quay.io/metal3-io/ironic-inspector
 sed -i s@http://:80@http://172.22.0.1:80@ /opt/metal3-dev-env/html/inspector.ipxe
 echo export OS_TOKEN=fake-token > /etc/profile.d/ironic.sh
 echo export OS_URL=http://localhost:6385 >> /etc/profile.d/ironic.sh
