@@ -1,5 +1,5 @@
 KUBERNETES_VERSION=${KUBERNETES_VERSION:-latest}
-[ "$KUBERNETES_VERSION" == "latest" ] && KUBERNETES_VERSION=$(curl -s https://api.github.com/repos/kubernetes/kubernetes/releases|grep tag_name|sort -V | tail -1 | awk -F':' '{print $2}' | sed 's/,//' | xargs | awk -F'-' '{print $1}' | sed 's/v//')
+[ "$KUBERNETES_VERSION" == "latest" ] && KUBERNETES_VERSION=$(curl -s https://api.github.com/repos/kubernetes/kubernetes/releases|grep tag_name| grep -v alpha | sort -V | tail -1 | awk -F':' '{print $2}' | sed 's/,//' | xargs | awk -F'-' '{print $1}' | sed 's/v//')
 echo net.ipv4.conf.all.forwarding=1 >> /etc/sysctl.conf
 echo net.bridge.bridge-nf-call-iptables=1 >> /etc/sysctl.conf
 sysctl -p
