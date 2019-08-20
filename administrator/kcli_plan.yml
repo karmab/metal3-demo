@@ -67,6 +67,7 @@ metal3-kubernetes:
   - provider-components.yaml
   - tvshows-user-data
   - kubevirt_tvshows.yml
+  - kubevirt_tvshows_pvc.yml
   - tvshows_svc_lb.yml
   - tvshows_svc_lb_v2.yml
 {% if deploy %}
