@@ -20,8 +20,9 @@ parameters:
  kafka: false
  olm: false
  nodes: 1
+ provisioning_network: provisioning
 
-provisioning:
+{{ provisioning_network }}:
  type: network
  cidr: 172.23.0.0/24
  dhcp: false
@@ -39,7 +40,7 @@ metal3-kubernetes:
  privatekey: true
  nets:
   - name: {{ network }}
-  - name: provisioning
+  - name: {{ provisioning_network }}
     noconf: yes
  disks:
   - size: {{ disk_size }}
@@ -86,7 +87,7 @@ metal3-node{{ "%02.d" | format(num + 1) }}:
  - size: {{ disk_size }}
  - size: {{ rook_disk_size }}
  nets:
- - name: provisioning
+ - name: {{ provisioning_network }}
    mac: 00:c2:fc:3b:e1:{{ "%02.d" | format(num + 1) }}
  - name: {{ network }}
 {% endfor %}

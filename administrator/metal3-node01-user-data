@@ -49,7 +49,7 @@ write_files:
      kind: JoinConfiguration	
      discovery:	
        bootstrapToken:	
-         apiServerEndpoint: IP:6443	
+         apiServerEndpoint: MASTERIP:6443	
          token: TOKEN	
          caCertHashes:	
          - sha256:HASH

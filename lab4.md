@@ -5,7 +5,7 @@ In this section, we migrate our kubevirt vm based app to a container workload.
 ```console
 [root@metal3-kubernetes ~]# kubectl create -f https://raw.githubusercontent.com/karmab/tvshows/master/crd.yml
 customresourcedefinition.apiextensions.k8s.io/tvshows.kool.karmalabs.com created
-[root@metal3-kubernetes ~]# wget https://raw.githubusercontent.com/karmab/tvshows/
+[root@metal3-kubernetes ~]# wget https://raw.githubusercontent.com/karmab/tvshows/deployment.yml
 --2019-07-08 18:47:46--  https://raw.githubusercontent.com/karmab/tvshows/master/deployment.yml
 Resolving raw.githubusercontent.com (raw.githubusercontent.com)... 151.101.0.133, 151.101.64.133, 151.101.128.133, ...
 Connecting to raw.githubusercontent.com (raw.githubusercontent.com)|151.101.0.133|:443... connected.
