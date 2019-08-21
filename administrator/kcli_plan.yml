@@ -69,6 +69,8 @@ metal3-kubernetes:
   - tvshows-user-data
   - kubevirt_tvshows.yml
   - kubevirt_tvshows_pvc.yml
+  - tvshows_svc_nodeport.yml
+  - tvshows_svc_nodeport_v2.yml
   - tvshows_svc_lb.yml
   - tvshows_svc_lb_v2.yml
 {% if deploy %}
