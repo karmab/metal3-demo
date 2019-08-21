@@ -24,7 +24,7 @@ parameters:
 
 {{ provisioning_network }}:
  type: network
- cidr: 172.23.0.0/24
+ cidr: 172.22.0.0/24
  dhcp: false
  nat: true
 

@@ -1,7 +1,7 @@
 yum -y install centos-release-openstack-stein.noarch bridge-utils
 yum -y install python2-virtualbmc ipmitool  python2-openstackclient python2-ironicclient
 
-echo -e "DEVICE=provisioning\nTYPE=Bridge\nONBOOT=yes\nNM_CONTROLLED=no\nBOOTPROTO=static\nIPADDR=172.22.0.1\nNETMASK=255.255.255.0" > /etc/sysconfig/network-scripts/ifcfg-provisioning
+echo -e "DEVICE=provisioning\nTYPE=Bridge\nONBOOT=yes\nNM_CONTROLLED=no\nBOOTPROTO=static\nIPADDR=172.22.0.2\nNETMASK=255.255.255.0" > /etc/sysconfig/network-scripts/ifcfg-provisioning
 echo -e "DEVICE=eth1\nTYPE=Ethernet\nONBOOT=yes\nNM_CONTROLLED=no\nBRIDGE=provisioning" > /etc/sysconfig/network-scripts/ifcfg-eth1
 ifup eth1
 ifup provisioning
@@ -31,6 +31,6 @@ docker run -d --net host --privileged --name httpd -v /opt/metal3-dev-env:/share
 docker run -d --net host --privileged --name mariadb -v /opt/metal3-dev-env:/shared --entrypoint /bin/runmariadb -e MARIADB_PASSWORD=$mariadb_password quay.io/metal3-io/ironic:master
 docker run -d --net host --privileged --name ironic -e MARIADB_PASSWORD=$mariadb_password -v /opt/metal3-dev-env:/shared -e PROVISIONING_INTERFACE=provisioning quay.io/metal3-io/ironic:master
 docker run -d --net host --privileged --name ironic-inspector -e PROVISIONING_INTERFACE=provisioning quay.io/metal3-io/ironic-inspector
-sed -i s@http://:80@http://172.22.0.1:80@ /opt/metal3-dev-env/html/inspector.ipxe
+sed -i s@http://:80@http://172.22.0.2:80@ /opt/metal3-dev-env/html/inspector.ipxe
 echo export OS_TOKEN=fake-token > /etc/profile.d/ironic.sh
 echo export OS_URL=http://localhost:6385 >> /etc/profile.d/ironic.sh

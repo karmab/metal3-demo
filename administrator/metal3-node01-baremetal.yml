@@ -15,7 +15,7 @@ metadata:
   namespace: metal3	
 spec:	
   bmc:	
-    address: ipmi://172.22.0.1:6230	
+    address: ipmi://172.22.0.2:6230	
     credentialsName: metal3-node01-credentials	
   bootMACAddress: 00:c2:fc:3b:e1:01	
   description: ""	
